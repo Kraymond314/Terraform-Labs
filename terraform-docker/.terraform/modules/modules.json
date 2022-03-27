@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"image","Source":"./image","Dir":"image"},{"Key":"container","Source":"./container","Dir":"container"},{"Key":"influxfb_image","Source":"./image","Dir":"image"},{"Key":"nodered_image","Source":"./image","Dir":"image"},{"Key":"","Source":"","Dir":"."},{"Key":"container.volume","Source":"./volume","Dir":"container/volume"}]}

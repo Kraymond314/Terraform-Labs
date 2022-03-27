@@ -1,0 +1,73 @@
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "2.15.0"
+    }
+  }
+}
+
+provider "docker" {}
+
+#create the image
+resource "docker_image" "nodered_image" {
+  #name must be referenced as the docker pull https://hub.docker.com/r/nodered/node-red/tags  is not abstract
+  name = "nodered/node-red:latest"
+}
+
+resource "random_string" "random" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
+resource "docker_container" "nodered_container" {
+#  count = 4
+  #can be logical value
+  name = join(".", ["nodered", random_string.random.result])
+  #latest is the id of the image
+  image = docker_image.nodered_image.latest
+  ports {
+    #referenced as number not int
+    internal = 1880
+    #external = 1880
+  }
+}
+
+resource "docker_container" "nodered_container2" {
+#  count = 4
+  #can be logical value
+  name = join(".", ["nodered2", random_string.random.result])
+  #latest is the id of the image
+  image = docker_image.nodered_image.latest
+  ports {
+    #referenced as number not int
+    internal = 1880
+    #external = 1880
+  }
+}
+
+#> join(":", [docker_container.nodered_container.ip_address, docker_container.nodered_container.ports[0].external])
+output "container_name" {
+    value = docker_container.nodered_container.name
+    description = "Container Name"
+}
+output "IP_Port" {
+    value = join(":", [docker_container.nodered_container.ip_address, docker_container.nodered_container.ports[0].external])
+   description = "Internal IP of the server"
+}
+
+
+output "container_name2" {
+    value = docker_container.nodered_container2.name
+    description = "Container Name"
+}
+output "IP_Port2" {
+    value = join(":", [docker_container.nodered_container2.ip_address, docker_container.nodered_container.ports[0].external])
+   description = "Internal IP of the server"
+}
+
+
+
+
+
